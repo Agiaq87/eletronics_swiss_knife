@@ -1,4 +1,5 @@
 import 'package:eletronics_swiss_knife/constant/title_constants.dart';
+import 'package:eletronics_swiss_knife/widget/resistor/resistor_calculator_card.dart';
 import 'package:flutter/material.dart';
 
 class ResistorHome extends StatefulWidget {
@@ -19,11 +20,7 @@ class _ResistorHomeState extends State<ResistorHome> {
         title: Text(TitleConstants.resistorHome),
       ),
       body: Center(
-        child: Column(
-          children: [
-
-          ],
-        )
+        child: ResistorCalculatorCard()
       )
   );
 }

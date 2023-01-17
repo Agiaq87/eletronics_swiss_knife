@@ -1,3 +1,4 @@
+import 'package:eletronics_swiss_knife/screen/resistor/resistor_home.dart';
 import 'package:flutter/material.dart';
 import 'package:eletronics_swiss_knife/constant/title_constants.dart';
 
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.red
       ),
-      home: const MyHomePage(title: 'ESK Eletronics Swiss Knife'),
+      home: const ResistorHome(),
     );
   }
 }

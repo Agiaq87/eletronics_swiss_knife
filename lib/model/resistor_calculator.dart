@@ -1,7 +1,7 @@
 /// Class for resistors calculation
 
 class ResistorCalculator {
-  static Future<int> calculate (double VF, int IF, {double VI = 3.3}) async {
-    return  (VF - VI)~/IF;
+  static int calculate ({required double VF, required int IF, double VI = 3.3}) {
+    return  (((VF - VI) / IF ) * 1000).ceil();
   }
 }
