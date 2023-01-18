@@ -3,6 +3,7 @@ import 'package:eletronics_swiss_knife/constant/color_constants.dart';
 import 'package:eletronics_swiss_knife/constant/elevation_constants.dart';
 import 'package:eletronics_swiss_knife/constant/formula_constants.dart';
 import 'package:eletronics_swiss_knife/constant/margin_constants.dart';
+import 'package:eletronics_swiss_knife/constant/padding_constants.dart';
 import 'package:eletronics_swiss_knife/model/resistor_calculator.dart';
 import 'package:eletronics_swiss_knife/widget/latex/latex_widget.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,10 @@ class _ResistorCalculatorCardState extends State<ResistorCalculatorCard> {
   double _vf = 0.0;
   double _vi = 0.0;
   int _i = 1;
-  int _result = 0;
+  double _result = 0.0;
+  String _nearest = '';
+
+  final ResistorCalculator _resistorCalculator = ResistorCalculator();
 
   @override
   Widget build(BuildContext context) => Card(
@@ -152,30 +156,53 @@ class _ResistorCalculatorCardState extends State<ResistorCalculatorCard> {
                         ],
                       ),
                     ),
-                    LatexWidget(
-                      formula: FormulaConstants.resistorFormula,
-                    ),
-                    const Icon(
-                      Icons.arrow_right_alt,
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child:
-                        Text(
-                            "$_result",
-                          style: TextStyle(
-                            color: ColorConstants.primary,
-                            fontWeight: FontWeight.bold
+                    Container(
+                      margin: MarginConstants.standard,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              LatexWidget(
+                                formula: FormulaConstants.resistorFormula,
+                              ),
+                              const Icon(
+                                Icons.arrow_right_alt,
+                              ),
+                              Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child:
+                                  Text(
+                                    "$_result",
+                                    style: TextStyle(
+                                        color: ColorConstants.primary,
+                                        fontWeight: FontWeight.bold
+                                    ),
+                                  )
+                              ),
+                              LatexWidget(
+                                formula: FormulaConstants.OMEGA,
+                                style: TextStyle(
+                                    color: ColorConstants.primary,
+                                    fontWeight: FontWeight.bold
+                                ),
+                                margin: MarginConstants.none,
+                              )
+                            ],
                           ),
-                        )
-                    ),
-                    LatexWidget(
-                        formula: FormulaConstants.OMEGA,
-                        style: TextStyle(
-                          color: ColorConstants.primary,
-                          fontWeight: FontWeight.bold
-                        ),
-                      margin: MarginConstants.none,
+                          Container(
+                            margin: MarginConstants.standard,
+                            child: Row(
+                              children: [
+                                _nearest.isNotEmpty ?
+                                LatexWidget(
+                                  formula: r'Suggested: ' + '$_nearest' + ' \\Omega',
+                                ) :
+                                const Text('Here nearest  suggested'),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 )
@@ -188,14 +215,16 @@ class _ResistorCalculatorCardState extends State<ResistorCalculatorCard> {
   void _updateVolt(bool isVF, double value) async {
     isVF ? _vf = value : _vi = value;
     setState(() {
-      _result = ResistorCalculator.calculate(VF: _vf, IF: _i, VI: _vi);
+      _result = _resistorCalculator.calculate(VF: _vf, IF: _i, VI: _vi);
+      _nearest = _resistorCalculator.searchNearest(value: _result);
     });
   }
 
   void _updateCurrent(int value) async {
     _i = value;
     setState(() {
-      _result = ResistorCalculator.calculate(VF: _vf, IF: _i, VI: _vi);
+      _result = _resistorCalculator.calculate(VF: _vf, IF: _i, VI: _vi);
+      _nearest = _resistorCalculator.searchNearest(value: _result);
     });
   }
 }
