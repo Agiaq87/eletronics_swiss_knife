@@ -9,4 +9,7 @@ class FormulaConstants {
 
   static String resistorFormula = r'\frac{V_F - V_I}{I}';
 
+  static String suggestedResistor(final String nearest) => r'Suggested: ' + '$nearest' + ' \\Omega'
+
+
 }

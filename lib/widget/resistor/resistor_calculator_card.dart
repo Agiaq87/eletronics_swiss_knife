@@ -195,7 +195,7 @@ class _ResistorCalculatorCardState extends State<ResistorCalculatorCard> {
                               children: [
                                 _nearest.isNotEmpty ?
                                 LatexWidget(
-                                  formula: r'Suggested: ' + '$_nearest' + ' \\Omega',
+                                  formula: FormulaConstants.suggestedResistor(_nearest),
                                 ) :
                                 const Text('Here nearest  suggested'),
                               ],
